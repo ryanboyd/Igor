@@ -21,9 +21,11 @@
 
 ## GPU / CUDA
 
- If you want Igor to use your GPU for image analysis (which is *much* faster), you will need to follow these instructions from the original Alturos.Yolo repo:
+ By default, Igor processes images using your CPU. If you want Igor to use your GPU instead (which is *much* faster), you will need to do a little bit of extra setup by following these instructions from the original Alturos.Yolo repo:
  
  1. Install the latest Nvidia driver for your graphic device
  2. [Install Nvidia CUDA Toolkit 10.2](https://developer.nvidia.com/cuda-downloads) (must be installed add a hardware driver for cuda support)
  3. [Download Nvidia cuDNN v7.6.5 for CUDA 10.2](https://developer.nvidia.com/rdp/cudnn-download)
  4. Copy the `cudnn64_7.dll` into the same folder as igor.exe
+ 
+ This assumes, of course, that you have a compatible GPU in the first place.
