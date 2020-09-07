@@ -163,7 +163,7 @@ namespace igor
                         Dictionary<string, int> imageObjects = new Dictionary<string, int>();
                         for (int i = 0; i < numObjectCategories; i++) imageObjects.Add(objectDict[i], 0);
 
-                        PrintFile(file);
+                        PrintFile(file, inputDir);
 
                         try 
                         {
@@ -282,10 +282,10 @@ namespace igor
 
         }
 
-        static void PrintFile(string filePath)
+        static void PrintFile(string filePath, string rootDir)
         {
             Console.ForegroundColor = workingColor;
-            Console.WriteLine("    -> " + Path.GetFileName(filePath));
+            Console.WriteLine("    -> " + filePath.Replace(rootDir, ""));
             Console.ForegroundColor = neutralColor;
             return;
         }
