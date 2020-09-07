@@ -125,22 +125,50 @@ namespace igor
             string inputDir = args[0];
             string outputFile = args[1];
 
+            //var yoloConfig = new YoloConfiguration();
+            var gpuConfig = new GpuConfig();
+            //gpuConfig.GpuIndex = 0;
+            
 
             YoloWrapper yoloWrapper = null;
 
             try
             {
-                yoloWrapper = new YoloWrapper(cfgPath, weightPath, namePath);
+                
+                yoloWrapper = new YoloWrapper(configurationFilename: cfgPath,
+                                                weightsFilename: weightPath,
+                                                namesFilename: namePath,
+                                                gpuConfig: gpuConfig);
+
+                WriteText(" GPU is ready to be used. Welcome to the fast lane!", ConsoleColor.Yellow);
+                Thread.Sleep(1000);
+
             }
-            catch (Exception ex)
+            catch
             {
-                PrintStrongLine();
-                WriteText(ex.ToString(), errColor);
-                PrintStrongLine();
-                WriteText("There was an error loading the model files. Please see the error text", errColor);
-                WriteText("above for additional details and debugging.", errColor);
-                EndProg();
+                try
+                {
+                    WriteText(" GPU is not able to be used. Requires CUDA 10.2 be installed", ConsoleColor.Yellow);
+                    WriteText(" and cudnn64_7.dll (dll for cuDNN v7.6.5 for CUDA 10.2)", ConsoleColor.Yellow);
+                    WriteText(" be located in the executable's folder.", ConsoleColor.Yellow);
+                    WriteText(" Running with CPU config instead...", ConsoleColor.Yellow);
+                    Thread.Sleep(5000);
+                                yoloWrapper = new YoloWrapper(configurationFilename: cfgPath,
+                                                                weightsFilename: weightPath,
+                                                                namesFilename: namePath,
+                                                                gpuConfig: null);
+                }
+                catch (Exception ex)
+                {
+                    PrintStrongLine();
+                    WriteText(ex.ToString(), errColor);
+                    PrintStrongLine();
+                    WriteText("There was an error loading the model files. Please see the error text", errColor);
+                    WriteText("above for additional details and debugging.", errColor);
+                    EndProg();
+                }
             }
+            
 
 
 
