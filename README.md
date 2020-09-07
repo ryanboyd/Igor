@@ -1,14 +1,14 @@
 # Igor
  A console-based wrapper to Alturos.Yolo v3.0.6. Counts the number of each type of object found within each image.
 
-# Download
+## Download
  The compiled binary can be downloaded from https://www.ryanboyd.io/software/toolbox
 
 ## System requirements
 - .NET Framework 4.6.1 or .NET standard 2.0
 - [Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019 x64](https://aka.ms/vs/16/release/vc_redist.x64.exe)
 
-# Use
+## Use
  Run from the command line with two parameters: the folder that contains your input files, and the location where you would like to save your CSV file. For example:
  
  ```
@@ -17,7 +17,7 @@
  
  Igor will recursively search your input folder for all jpg and png files.
 
-# GPU / CUDA
+## GPU / CUDA
 
  If you want Igor to use your GPU for image analysis (which is *much* faster), you will need to follow these instructions from the original Alturos.Yolo repo:
  
