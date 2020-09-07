@@ -236,6 +236,8 @@ namespace igor
 
             }
 
+            yoloWrapper.Dispose();
+
             EndProg();
 
 
