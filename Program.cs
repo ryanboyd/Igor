@@ -368,11 +368,6 @@ namespace igor
 
                 string lines;
 
-                using (StreamReader detailsFile = new StreamReader(detailsPath))
-                {
-                    lines = detailsFile.ReadToEnd().Trim();
-                }
-
                 // read the file with the model details.
                 using (FileStream fileStream = new FileStream(detailsPath, FileMode.Open, FileAccess.Read))
                 using (StreamReader streamRead = new StreamReader(fileStream, System.Text.Encoding.UTF8))
