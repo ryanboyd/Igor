@@ -320,6 +320,10 @@ namespace igor
             return;
         }
 
+
+
+
+
         static Dictionary<int, string> GetModelNames(string namePath)
         {
             
@@ -348,6 +352,13 @@ namespace igor
 
         }
 
+
+
+
+
+
+
+
         static Dictionary<string, string> GetModelSpecs(string detailsPath)
         {
 
@@ -360,6 +371,15 @@ namespace igor
                 using (StreamReader detailsFile = new StreamReader(detailsPath))
                 {
                     lines = detailsFile.ReadToEnd().Trim();
+                }
+
+                // read the file with the model details.
+                using (FileStream fileStream = new FileStream(detailsPath, FileMode.Open, FileAccess.Read))
+                using (StreamReader streamRead = new StreamReader(fileStream, System.Text.Encoding.UTF8))
+                {
+
+                    lines = streamRead.ReadToEnd().Trim();
+
                 }
 
                 string[] modelDetails = lines.Split( new[] {"\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
