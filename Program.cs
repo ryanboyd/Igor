@@ -23,7 +23,7 @@ namespace igor
         const ConsoleColor strongLineColor = ConsoleColor.DarkGray;
         const string strongLine = "===================================================";
 
-        const string modelDetailsFile = "modelDat\\modelSelect.txt";
+        
         
 
         static void Main(string[] args)
@@ -47,7 +47,7 @@ namespace igor
             PrintHeader();
 
 
-            Dictionary<string, string> modelDetails = GetModelSpecs(modelDetailsFile);
+            Dictionary<string, string> modelDetails = GetModelSpecs(Path.Combine(execpath, "modelDat", "modelSelect.txt"));
 
 
             string cfgPath = Path.Combine(execpath, "modelDat", modelDetails["cfg"]);
@@ -351,7 +351,6 @@ namespace igor
         static Dictionary<string, string> GetModelSpecs(string detailsPath)
         {
 
-
             try { 
 
                 Dictionary<string, string> detailsDict = new Dictionary<string, string>(); ;
@@ -363,7 +362,7 @@ namespace igor
                     lines = detailsFile.ReadToEnd().Trim();
                 }
 
-                string[] modelDetails = lines.Split( new char[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+                string[] modelDetails = lines.Split( new[] {"\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (modelDetails.Length != 3)
                 {
