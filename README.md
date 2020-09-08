@@ -7,7 +7,7 @@
  The compiled binary can be downloaded from https://www.ryanboyd.io/software/toolbox
 
 ## System requirements
-- .NET Framework 4.6.1 or .NET standard 2.0
+- .NET Framework 4.6.1
 - [Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019 x64](https://aka.ms/vs/16/release/vc_redist.x64.exe)
 
 ## Use
