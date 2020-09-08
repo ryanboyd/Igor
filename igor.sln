@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igor", "igor\igor.csproj", "{B7ABF09B-0688-4122-B9DA-080655F1868F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E201198-DFCD-40C7-8FEB-CF963FD1BA80} = {1E201198-DFCD-40C7-8FEB-CF963FD1BA80}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alturos.Yolo", "Alturos.Yolo-master\src\Alturos.Yolo\Alturos.Yolo.csproj", "{1E201198-DFCD-40C7-8FEB-CF963FD1BA80}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E201198-DFCD-40C7-8FEB-CF963FD1BA80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E201198-DFCD-40C7-8FEB-CF963FD1BA80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E201198-DFCD-40C7-8FEB-CF963FD1BA80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E201198-DFCD-40C7-8FEB-CF963FD1BA80}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16558598-5812-418C-805B-D4D9610784A1}
+	EndGlobalSection
+EndGlobal
