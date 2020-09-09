@@ -8,12 +8,13 @@ using System.Runtime.CompilerServices;
 
 namespace igorCore
 {
-    public class Igor
+    public class igorCore
     {
-        private string modelDetailsCfg { get; set; }
-        private string modelDetailsWeights { get; set; }
-        private string modelDetailsNames { get; set; }
+        public string modelDetailsCfg { get; set; }
+        public string modelDetailsWeights { get; set; }
+        public string modelDetailsNames { get; set; }
         public Dictionary<int, string> theBags { get; set;  }
+        public bool gpuAvailable { get; set; } = false;
         
         private YoloWrapper yoloWrapper { get; set; } = null;
 
@@ -34,7 +35,7 @@ namespace igorCore
                                                 gpuConfig: gpuConfig);
 
                 Console.WriteLine(" GPU is ready to be used. Welcome to the fast lane!");
-
+                gpuAvailable = true;
 
             }
             catch
@@ -48,6 +49,8 @@ namespace igorCore
                                                     weightsFilename: this.modelDetailsWeights,
                                                     namesFilename: this.modelDetailsNames,
                                                     gpuConfig: null);
+
+                gpuAvailable = false;
 
             }
         }
@@ -82,9 +85,9 @@ namespace igorCore
 
                 for (int i = 0; i < modelDetails.Length; i++) modelDetails[i] = modelDetails[i].Trim();
 
-                this.modelDetailsCfg = Path.Combine(Directory.GetCurrentDirectory(), "modelDat", modelDetails[0]);
-                this.modelDetailsWeights = Path.Combine(Directory.GetCurrentDirectory(), "modelDat", modelDetails[1]);
-                this.modelDetailsNames = Path.Combine(Directory.GetCurrentDirectory(), "modelDat", modelDetails[2]);
+                this.modelDetailsCfg = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "modelDat", modelDetails[0]));
+                this.modelDetailsWeights = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "modelDat", modelDetails[1]));
+                this.modelDetailsNames = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "modelDat", modelDetails[2]));
 
                 Console.WriteLine(" Intended cfg file: " + this.modelDetailsCfg.Replace(Directory.GetCurrentDirectory(), ""));
                 Console.WriteLine(" Intended weights file: " + this.modelDetailsWeights.Replace(Directory.GetCurrentDirectory(), ""));

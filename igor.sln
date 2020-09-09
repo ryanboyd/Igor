@@ -12,6 +12,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igorCore", "igorCore\igorCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alturos.Yolo", "Alturos.Yolo\src\Alturos.Yolo\Alturos.Yolo.csproj", "{5345A282-712E-42B0-9195-298DDD8EF29D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igorGui", "igorGui\igorGui.csproj", "{B7902A83-8762-47DF-A108-4D2564F43239}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E6205388-3488-4DF7-A64F-DB2C5431663A} = {E6205388-3488-4DF7-A64F-DB2C5431663A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +35,10 @@ Global
 		{5345A282-712E-42B0-9195-298DDD8EF29D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5345A282-712E-42B0-9195-298DDD8EF29D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5345A282-712E-42B0-9195-298DDD8EF29D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7902A83-8762-47DF-A108-4D2564F43239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7902A83-8762-47DF-A108-4D2564F43239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7902A83-8762-47DF-A108-4D2564F43239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7902A83-8762-47DF-A108-4D2564F43239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

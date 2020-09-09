@@ -51,8 +51,8 @@ namespace igorConsole
             //bring an Igor() into the mix. This wakes him up,
             //tells him where the model details are, etc.
 
-            
-            Igor igor = new Igor();
+
+            igorCore.igorCore igor = new igorCore.igorCore();
             PrintStrongLine();
             Console.ForegroundColor = exampleColor;
             try
