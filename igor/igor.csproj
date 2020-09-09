@@ -37,7 +37,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>igor.Program</StartupObject>
+    <StartupObject>igorConsole.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>igor.ico</ApplicationIcon>
@@ -60,13 +60,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Alturos.Yolo-master\src\Alturos.Yolo\Alturos.Yolo.csproj">
-      <Project>{1e201198-dfcd-40c7-8feb-cf963fd1ba80}</Project>
-      <Name>Alturos.Yolo</Name>
-    </ProjectReference>
+    <Content Include="igor.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="igor.ico" />
+    <ProjectReference Include="..\igorCore\igorCore.csproj">
+      <Project>{e6205388-3488-4df7-a64f-db2c5431663a}</Project>
+      <Name>igorCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

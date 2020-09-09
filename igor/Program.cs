@@ -1,14 +1,14 @@
-﻿using Alturos.Yolo;
-using System;
+﻿using System;
 using System.Text;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Reflection;
 using System.Collections.Generic;
+using igorCore;
 
 
-namespace igor
+namespace igorConsole
 {
     class Program
     {
@@ -47,17 +47,28 @@ namespace igor
             PrintHeader();
 
 
-            Dictionary<string, string> modelDetails = GetModelSpecs(Path.Combine(execpath, "modelDat", "modelSelect.txt"));
 
+            //bring an Igor() into the mix. This wakes him up,
+            //tells him where the model details are, etc.
 
-            string cfgPath = Path.Combine(execpath, "modelDat", modelDetails["cfg"]);
-            string weightPath = Path.Combine(execpath, "modelDat", modelDetails["weights"]);
-            string namePath = Path.Combine(execpath, "modelDat", modelDetails["names"]);
+            
+            Igor igor = new Igor();
+            PrintStrongLine();
+            Console.ForegroundColor = exampleColor;
+            try
+            {
+                igor.Werewolf(Path.Combine(execpath, "modelDat", "modelSelect.txt"));
+            }
+            catch (Exception ex)
+            {
+                WriteText(ex.ToString(), errColor);
+                EndProg();
+            }
+            Console.ForegroundColor = neutralColor;
+            Thread.Sleep(1000);
+            PrintStrongLine();
 
-
-
-            Dictionary<int, string> objectDict = GetModelNames(namePath);
-            int numObjectCategories = objectDict.Count();
+            int numObjectCategories = igor.theBags.Count();
 
             bool ableToLog = false;
 
@@ -109,7 +120,7 @@ namespace igor
                 {
 
                     string headerRow = "\"Filename\"";
-                    for (int i = 0; i < numObjectCategories; i++) headerRow += ",\"" + objectDict[i] + "\"";
+                    for (int i = 0; i < numObjectCategories; i++) headerRow += ",\"" + igor.theBags[i] + "\"";
 
                     streamWriter.WriteLine(headerRow);
 
@@ -156,52 +167,11 @@ namespace igor
             #endregion
 
 
-
-
-
-            //var yoloConfig = new YoloConfiguration();
-            var gpuConfig = new GpuConfig();
-            //gpuConfig.GpuIndex = 0;
-            
-
-            YoloWrapper yoloWrapper = null;
-
-            try
-            {
-                
-                yoloWrapper = new YoloWrapper(configurationFilename: cfgPath,
-                                                weightsFilename: weightPath,
-                                                namesFilename: namePath,
-                                                gpuConfig: gpuConfig);
-
-                WriteText(" GPU is ready to be used. Welcome to the fast lane!", ConsoleColor.Yellow);
-                Thread.Sleep(1000);
-
-            }
-            catch
-            {
-                try
-                {
-                    WriteText(" GPU is not able to be used. See documentation for details.", ConsoleColor.Yellow);
-                    WriteText(" Running with CPU config instead...", ConsoleColor.Yellow);
-                    Thread.Sleep(5000);
-                                yoloWrapper = new YoloWrapper(configurationFilename: cfgPath,
-                                                                weightsFilename: weightPath,
-                                                                namesFilename: namePath,
-                                                                gpuConfig: null);
-                }
-                catch (Exception ex)
-                {
-                    PrintStrongLine();
-                    WriteText(ex.ToString(), errColor);
-                    PrintStrongLine();
-                    WriteText("There was an error loading the model files. Please see the error text", errColor);
-                    WriteText("above for additional details and debugging.", errColor);
-                    EndProg();
-                }
-            }
-            
-
+            //this actually instantiates the model. very important stuff.
+            Console.ForegroundColor = exampleColor;
+            igor.WalkThisWay();
+            Thread.Sleep(1000);
+            Console.ForegroundColor = neutralColor;
 
 
             var inputFiles = Directory.EnumerateFiles(inputDir, searchPattern: "*.*", searchOption: SearchOption.AllDirectories)
@@ -220,20 +190,20 @@ namespace igor
                     {
 
                         Dictionary<string, int> imageObjects = new Dictionary<string, int>();
-                        for (int i = 0; i < numObjectCategories; i++) imageObjects.Add(objectDict[i], 0);
+                        for (int i = 0; i < numObjectCategories; i++) imageObjects.Add(igor.theBags[i], 0);
 
                         PrintFile(file, inputDir);
 
                         try 
                         {
-                            var items = yoloWrapper.Detect(file);
+                            List<string> items = igor.Blucher(file);
 
-                            foreach (var item in items) imageObjects[item.Type]++;
+                            foreach (string item in items) imageObjects[item]++;
 
                             #region build/write output
                             //write our output
                             string headerRow = "\"Filename\"";
-                            for (int i = 0; i < numObjectCategories; i++) headerRow += ",\"" + objectDict[i] + "\"";
+                            for (int i = 0; i < numObjectCategories; i++) headerRow += ",\"" + igor.theBags[i] + "\"";
 
                             StringBuilder outputRow = new StringBuilder();
 
@@ -242,7 +212,7 @@ namespace igor
                             for (int i = 0; i < numObjectCategories; i++)
                             {
                                 outputRow.Append(',');
-                                outputRow.Append(imageObjects[objectDict[i]]);
+                                outputRow.Append(imageObjects[igor.theBags[i]]);
                             }
 
                             streamWriter.WriteLine(outputRow.ToString());
@@ -269,19 +239,14 @@ namespace igor
                         }
                         
 
-                        //    //items[0].Type -> "Person, Car, ..."
-                        //    //items[0].Confidence -> 0.0 (low) -> 1.0 (high)
-                        //    //items[0].X -> bounding box
-                        //    //items[0].Y -> bounding box
-                        //    //items[0].Width -> bounding box
-                        //    //items[0].Height -> bounding box
+
                     }
 
                 
 
             }
 
-            yoloWrapper.Dispose();
+            igor.WhatHump();
 
             EndProg();
 
@@ -294,8 +259,6 @@ namespace igor
             Console.ForegroundColor = textcolor;
             Console.WriteLine(error);
             Console.ForegroundColor = neutralColor;
-
-
         }
 
 
@@ -369,33 +332,7 @@ namespace igor
 
 
 
-        static Dictionary<int, string> GetModelNames(string namePath)
-        {
-            
-            
-            Dictionary<int, string> objectDict = new Dictionary<int, string>(); ;
-
-            using (StreamReader objectNamesFile = new StreamReader(namePath))
-            {
-                int counter = 0;
-                string ln;
-
-                while ((ln = objectNamesFile.ReadLine()) != null)
-                {
-                    objectDict.Add(counter, ln.Trim());
-                    counter++;
-                }
-                objectNamesFile.Close();
-                
-                Console.WriteLine(" Your model codes for " + counter.ToString() + " distinct objects.");
-            }
-
-            PrintStrongLine();
-            Thread.Sleep(1000);
-
-            return objectDict;
-
-        }
+        
 
 
 
@@ -404,59 +341,7 @@ namespace igor
 
 
 
-        static Dictionary<string, string> GetModelSpecs(string detailsPath)
-        {
-
-            try { 
-
-                Dictionary<string, string> detailsDict = new Dictionary<string, string>(); ;
-
-                string lines;
-
-                // read the file with the model details.
-                using (FileStream fileStream = new FileStream(detailsPath, FileMode.Open, FileAccess.Read))
-                using (StreamReader streamRead = new StreamReader(fileStream, System.Text.Encoding.UTF8))
-                {
-
-                    lines = streamRead.ReadToEnd().Trim();
-
-                }
-
-                string[] modelDetails = lines.Split( new[] {"\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-                if (modelDetails.Length != 3)
-                {
-                    WriteText("There is an issue with your modelSelect.txt file.", errColor);
-                    WriteText("It does not have the correct number of details (3).", errColor);
-                    EndProg();
-                }
-                
-                for (int i = 0; i < modelDetails.Length; i++) modelDetails[i] = modelDetails[i].Trim();
-
-                detailsDict.Add("cfg", modelDetails[0]);
-                detailsDict.Add("weights", modelDetails[1]);
-                detailsDict.Add("names", modelDetails[2]);
-
-                PrintStrongLine();
-                WriteText(" Intended cfg file: " + detailsDict["cfg"], exampleColor);
-                WriteText(" Intended weights file: " + detailsDict["weights"], exampleColor);
-                WriteText(" Intended names file: " + detailsDict["names"], exampleColor);
-
-
-                PrintStrongLine();
-                Thread.Sleep(1000);
-
-                return detailsDict;
-
-            }
-            catch
-            {
-                WriteText("There is an issue with your modelSelect.txt file.", errColor);
-                EndProg();
-                return new Dictionary<string, string>();
-            }
-
-        }
+        
 
 
     }
