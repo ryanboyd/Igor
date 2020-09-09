@@ -353,3 +353,5 @@ MigrationBackup/
 .ionide/
 modelDat/
 cudaFiles
+Alturos.Yolo/.gitignore
+Alturos.Yolo/.git/
