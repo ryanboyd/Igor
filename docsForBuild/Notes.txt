@@ -1,0 +1,3 @@
+Working with a specific pull request of Alturos.Yolo. Using this version because it is smarter about VC++ Redist. detection:
+
+https://github.com/AlturosDestinations/Alturos.Yolo/pull/131
