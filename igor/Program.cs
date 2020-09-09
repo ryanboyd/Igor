@@ -59,7 +59,7 @@ namespace igor
             Dictionary<int, string> objectDict = GetModelNames(namePath);
             int numObjectCategories = objectDict.Count();
 
-
+            bool ableToLog = false;
 
 
 
@@ -88,13 +88,18 @@ namespace igor
                     EndProg();
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                PrintStrongLine();
+                Console.WriteLine(ex.ToString(), errColor);
+                PrintStrongLine();
+
                 WriteText("Your input parameters appear to be incorrect. For example:", errColor);
                 WriteText("  igor.exe \"C:\\imagefiles\" \"C:\\OutputData.csv\" ", exampleColor);
                 EndProg();
             }
 
+            #region try to initialize file
             try
             {
 
@@ -111,19 +116,48 @@ namespace igor
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
+                PrintStrongLine();
+                Console.WriteLine(ex.ToString(), errColor);
+                PrintStrongLine();
                 WriteText("Your output file does not appear to be valid. Please check to ensure that", errColor);
                 WriteText("the file location correct and that the file is not open in another program.", errColor);
                 EndProg();
             }
+            #endregion
+
+            // now that we've vetted the arguments, we can rename them to actual
+            //variables for better readability
+            string inputDir = args[0];
+            string outputFile = args[1];
+            string logFile = outputFile + ".log";
+
+            #region check to see if we can create a log
+            try
+            {
+                // Create the file, or overwrite if the file exists.
+                using (FileStream fileStream = new FileStream(logFile, FileMode.Create, FileAccess.Write, FileShare.Read))
+                using (StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.UTF8))
+                {
+                }
+
+                ableToLog = true;
+
+            }
+            catch (Exception ex)
+            {
+                //do nothing since ableToLog is false by default
+            }
+            #endregion
+
+
 
             #endregion
 
 
 
-            string inputDir = args[0];
-            string outputFile = args[1];
+
 
             //var yoloConfig = new YoloConfiguration();
             var gpuConfig = new GpuConfig();
@@ -148,9 +182,7 @@ namespace igor
             {
                 try
                 {
-                    WriteText(" GPU is not able to be used. Requires CUDA 10.2 be installed", ConsoleColor.Yellow);
-                    WriteText(" and cudnn64_7.dll (dll for cuDNN v7.6.5 for CUDA 10.2)", ConsoleColor.Yellow);
-                    WriteText(" be located in the executable's folder.", ConsoleColor.Yellow);
+                    WriteText(" GPU is not able to be used. See documentation for details.", ConsoleColor.Yellow);
                     WriteText(" Running with CPU config instead...", ConsoleColor.Yellow);
                     Thread.Sleep(5000);
                                 yoloWrapper = new YoloWrapper(configurationFilename: cfgPath,
@@ -182,7 +214,6 @@ namespace igor
             {
                 
 
-            
                     WriteText(" -> ...model has been loaded.");
 
                     foreach (string file in inputFiles)
@@ -218,9 +249,23 @@ namespace igor
                             #endregion
 
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             WriteText("     -> There was an error processing this file.", errColor);
+                            WriteText("     -> Please see .log file for details.", errColor);
+
+                        if (ableToLog)
+                            {
+                                using (FileStream fs = new FileStream(logFile, FileMode.Create, FileAccess.Write, FileShare.Read))
+                                using (StreamWriter logWriter = new StreamWriter(fileStream, System.Text.Encoding.UTF8))
+                                {
+                                    logWriter.WriteLine(strongLine);
+                                    logWriter.WriteLine("Error processing " + file);
+                                    logWriter.WriteLine(Environment.NewLine);
+                                    logWriter.WriteLine(ex.ToString());
+                                }
+                            }
+
                         }
                         
 
