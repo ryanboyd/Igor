@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace igorCore
 {
-    public class igorCore
+    public class Igor
     {
         public string modelDetailsCfg { get; set; }
         public string modelDetailsWeights { get; set; }
@@ -169,7 +169,7 @@ namespace igorCore
 
         public void WhatHump()
         {
-            yoloWrapper.Dispose();
+            if (yoloWrapper != null) yoloWrapper.Dispose();
         }
 
 

@@ -52,7 +52,7 @@ namespace igorConsole
             //tells him where the model details are, etc.
 
 
-            igorCore.igorCore igor = new igorCore.igorCore();
+            igorCore.Igor igor = new igorCore.Igor();
             PrintStrongLine();
             Console.ForegroundColor = exampleColor;
             try
