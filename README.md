@@ -18,6 +18,11 @@
  ```
  
  Igor will recursively search your input folder for all jpg and png files.
+ 
+ Alternatively, you can run igorGUI.exe and perform the same analyses from a graphical interface. The underlying core does all of the same processing, but this version might be slightly more accessible to people who aren't as savvy/comfortable with command lines.
+ 
+ ![banner](img/igorGUI.png)
+ 
 
 ## GPU / CUDA
 
