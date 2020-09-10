@@ -52,7 +52,7 @@ namespace igorConsole
             //tells him where the model details are, etc.
 
 
-            igorCore.Igor igor = new igorCore.Igor();
+            igorCore.igorCore igor = new igorCore.igorCore();
             PrintStrongLine();
             Console.ForegroundColor = exampleColor;
             try
@@ -196,7 +196,7 @@ namespace igorConsole
 
                         try 
                         {
-                            List<string> items = igor.Blucher(file);
+                            List<string> items = igor.Blücher(file);
 
                             foreach (string item in items) imageObjects[item]++;
 

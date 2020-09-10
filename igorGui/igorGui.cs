@@ -5,12 +5,9 @@ using System.IO;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using igorCore;
 using System.Windows.Forms;
-using System.Reflection;
-using System.Data.SqlTypes;
-using igorCore;
+
 
 namespace igorGui
 {
@@ -21,12 +18,17 @@ namespace igorGui
         private bool gotCfg { get; set; }
         private bool gotWeight { get; set; }
         private bool gotNames { get; set; }
+        private bool gotFileIn { get; set; }
+        private bool gotFileOut { get; set; }
 
         public igorForm()
         {
             InitializeComponent();
-            
-            Igor igor = new Igor();
+
+            igorCore.igorCore igor = new igorCore.igorCore();
+            gotFileIn = false;
+            gotFileOut = false;
+            RecursiveSearchCheckbox.Checked = true;
 
             try
             {
@@ -63,7 +65,7 @@ namespace igorGui
                 gotNames = true;
 
             }
-            catch
+            catch (Exception ex)
             {
                 gotCfg = false;
                 gotWeight = false;
@@ -79,6 +81,8 @@ namespace igorGui
 
         private void processButton_Click(object sender, EventArgs e)
         {
+
+            #region Make sure that the user has the settings all lined up and ready to go
             if (!gotCfg)
             {
                 MessageBox.Show("Please select a \"Cfg\" file before proceeding to process your images.", "I Ain't Got No Body", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -94,14 +98,33 @@ namespace igorGui
                 MessageBox.Show("Please select a \"Names\" file before proceeding to process your images.", "I Ain't Got No Body", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            else if (!gotNames)
+            {
+                MessageBox.Show("Please select a \"Names\" file before proceeding to process your images.", "I Ain't Got No Body", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            Bags bags = new Bags(cfgTextBox.Text, weightsTextBox.Text, namesTextBox.Text);
+
+            #endregion
 
 
+            Bags bags = new Bags(cfgTextBox.Text, weightsTextBox.Text, namesTextBox.Text,
+                                FolderInputTextbox.Text, FileOutTextBox.Text);
+            bags.setRecursive(RecursiveSearchCheckbox.Checked);
+
+
+            //keep the user from fiddling with the interface
+            ControlsEnabled(false);
+
+
+            processingLabel.Text = "Initializing...";
             bgworker = new BackgroundWorker();
             bgworker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
-            bgworker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker_RunWorkerCompleted);
-            bgworker.ProgressChanged += new ProgressChangedEventHandler(backgroundWorker_ProgressChanged);
+            bgworker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgworkerReportRunWorkerCompleted);
+            bgworker.WorkerReportsProgress = true;
+            bgworker.WorkerSupportsCancellation = true;
+            bgworker.ProgressChanged += new ProgressChangedEventHandler(bgworkerProgressChanged);
+
 
             bgworker.RunWorkerAsync(bags);
 
@@ -174,7 +197,7 @@ namespace igorGui
                 try
                 {
 
-                    Igor igor = new Igor();
+                    igorCore.igorCore igor = new igorCore.igorCore();
                     igor.ThereWolfThereCastle(cfg: "", weights: "", namesTextBox.Text);
                     numberOfObjectsLabel.Text = "The selected model will code images for " + igor.theBags.Count() + " different object classes.";
                     igor.WhatHump();
@@ -198,7 +221,6 @@ namespace igorGui
                 gotNames = false;
             }
         }
-
 
         internal string GetFilePath(string filterString, string defaultFile, string startPath)
         {
@@ -237,17 +259,120 @@ namespace igorGui
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+        
+            
+            
+            Bags bags = (Bags)e.Argument;
+            igorCore.igorCore igor = new igorCore.igorCore();
+
+            try 
+            { 
+                igor.ThereWolfThereCastle(bags.GetCfg(), bags.GetWeight(), bags.GetNames());
+                igor.WalkThisWay();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There was a problem initializing your YOLO model. Please share the following information with the software developer:" + Environment.NewLine + ex.ToString(),
+                    "Damn Your Eyes!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+
+            var inputFiles = Directory.EnumerateFiles(bags.GetFolderIn(), searchPattern: "*.*", searchOption: bags.getDirDepth())
+                .Where(s => s.EndsWith(".jpg") || s.EndsWith(".png"));
+
+
+
+            using (FileStream fileStream = new FileStream(bags.GetFileOut(), FileMode.Append, FileAccess.Write, FileShare.Read))
+            using (StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.UTF8))
+            {
+
+                string headerRow = "\"Filename\"";
+                for (int i = 0; i < igor.bagCount; i++) headerRow += ",\"" + igor.theBags[i] + "\"";
+
+                streamWriter.WriteLine(headerRow);
+
+
+                foreach (string file in inputFiles)
+                {
+
+                    if (bgworker.CancellationPending) break;
+                    bgworker.ReportProgress(0, file.Replace(bags.GetFolderIn(), ""));
+                    
+                    Dictionary<string, int> imageObjects = new Dictionary<string, int>();
+                    for (int i = 0; i < igor.bagCount; i++) imageObjects.Add(igor.theBags[i], 0);
+                    
+                    try
+                    {
+                        List<string> items = igor.Blücher(file);
+
+                        foreach (string item in items) imageObjects[item]++;
+
+                        #region build/write output
+                        
+                        StringBuilder outputRow = new StringBuilder();
+
+                        //add the filename to the output
+                        outputRow.Append("\"" + file.Replace(bags.GetFolderIn(), "").Replace("\"", "\"\"") + "\"");
+                        for (int i = 0; i < igor.bagCount; i++)
+                        {
+                            outputRow.Append(',');
+                            outputRow.Append(imageObjects[igor.theBags[i]]);
+                        }
+
+                        streamWriter.WriteLine(outputRow.ToString());
+                        #endregion
+
+                    }
+                    catch (Exception ex)
+                    {
+                            using (FileStream fs = new FileStream(bags.GetFileOut() + ".log", FileMode.Create, FileAccess.Write, FileShare.Read))
+                            using (StreamWriter logWriter = new StreamWriter(fileStream, System.Text.Encoding.UTF8))
+                            {
+                                logWriter.WriteLine("================================================");
+                                logWriter.WriteLine("Error processing " + file);
+                                logWriter.WriteLine(Environment.NewLine);
+                                logWriter.WriteLine(ex.ToString());
+                            }
+                        
+
+                    }
+
+
+
+                }
+
+
+
+            }
+
+            igor.WhatHump();
+
+
+
+
+
+
+
 
         }
 
 
-        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+
+
+
+
+        private void bgworkerReportRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            processingLabel.Text = "Finished!";
+            MessageBox.Show("Igor is finished processing your images.", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ControlsEnabled(true);
         }
 
-        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void bgworkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            //this.progressBar1.Value = e.ProgressPercentage;
+            processingLabel.Text = "Processing: " + e.UserState as String;
         }
 
 
@@ -257,24 +382,143 @@ namespace igorGui
             string cfg;
             string weights;
             string names;
-            public string folderIn { get; set; }
-            public string fileOut { get; set; }
+            SearchOption directoryDepth;
 
-            public Bags(string c, string w, string n)
+            string folderIn;
+            string fileOut;
+
+
+            public Bags(string c, string w, string n, string fi, string fo)
             {
                 cfg = c;
                 weights = w;
                 names = n;
+                folderIn = fi;
+                fileOut = fo;
             }
 
             public string GetCfg() { return cfg; }
             public string GetWeight() { return weights; }
             public string GetNames() { return names; }
+            public string GetFolderIn() { return folderIn; }
+            public string GetFileOut() { return fileOut; }
+
+            public void setRecursive(bool recursiveSearch)
+            {
+                if (recursiveSearch)
+                {
+                    directoryDepth = SearchOption.AllDirectories;
+                }
+                else
+                {
+                    directoryDepth = SearchOption.TopDirectoryOnly;
+                }
+
+            }
+            public SearchOption getDirDepth() { return directoryDepth; }
 
 
         }
 
+        private void ControlsEnabled(bool enabled)
+        {
 
+            cfgFileButton.Enabled = enabled;
+            weightsFileButton.Enabled = enabled;
+            namesFileButton.Enabled = enabled;
+            InputFolderButton.Enabled = enabled;
+            OutputFileButton.Enabled = enabled;
+            RecursiveSearchCheckbox.Enabled = enabled;
+            processButton.Enabled = enabled;
+            //the cancellation button should always be the opposite of the other buttons
+            CancelButton.Enabled = !enabled;
+            
+        }
 
+        private void InputFolderButton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderIn = new FolderBrowserDialog();
+            folderIn.Description = "Choose the folder with all of your images.";
+            folderIn.ShowNewFolderButton = false;
+            if (!string.IsNullOrEmpty(FileOutTextBox.Text)) folderIn.SelectedPath = Path.GetDirectoryName(FileOutTextBox.Text);
+
+            DialogResult = folderIn.ShowDialog();
+
+            if (DialogResult == DialogResult.OK)
+            {
+                FolderInputTextbox.Text = folderIn.SelectedPath;
+                FolderInputTextbox.SelectionStart = FolderInputTextbox.Text.Length;
+                FolderInputTextbox.SelectionLength = 0;
+                gotFileIn = true;
+            }
+            else
+            {
+                FolderInputTextbox.Text = "";
+                gotFileIn = false;
+            }
+
+        }
+
+        private void OutputFileButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog fileOut = new SaveFileDialog();
+            fileOut.Filter = "CSV File (*.csv)|*.csv";
+            fileOut.DefaultExt = ".csv";
+            fileOut.FileName = "IgorOutput.csv";
+            fileOut.Title = "Choose your output file to save.";
+            fileOut.ValidateNames = true;
+            fileOut.OverwritePrompt = true;
+            fileOut.CheckFileExists = false;
+            fileOut.CheckPathExists = true;
+
+            if (!string.IsNullOrEmpty(FolderInputTextbox.Text)) fileOut.InitialDirectory = FolderInputTextbox.Text;
+
+            DialogResult result = fileOut.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+
+                try
+                {
+
+                    // Create the file, or overwrite if the file exists.
+                    using (FileStream fileStream = new FileStream(fileOut.FileName, FileMode.Create, FileAccess.Write, FileShare.Read))
+                    using (StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.UTF8))
+                    {
+                    }
+
+                    // Create the file, or overwrite if the file exists.
+                    using (FileStream fileStream = new FileStream(fileOut.FileName + ".log", FileMode.Create, FileAccess.Write, FileShare.Read))
+                    using (StreamWriter streamWriter = new StreamWriter(fileStream, System.Text.Encoding.UTF8))
+                    {
+                    }
+
+                    FileOutTextBox.Text = fileOut.FileName;
+                    FileOutTextBox.SelectionStart = FileOutTextBox.Text.Length;
+                    FileOutTextBox.SelectionLength = 0;
+                    gotFileOut = true;
+
+                }
+                catch
+                {
+                    MessageBox.Show("There was a problem initializing your output file and/or associated log file. Please ensure that you have appropriate access to the " +
+                                    "file that you are trying to create, and that the file is not currently open in another application.", "Call it... \"a hunch\"", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    FileOutTextBox.Text = "";
+                    gotFileOut = false;
+                }
+
+            }
+            else
+            {
+                FileOutTextBox.Text = "";
+                gotFileOut = false;
+            }
+                    
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            if (bgworker.IsBusy) bgworker.CancelAsync();
+        }
     }
 }

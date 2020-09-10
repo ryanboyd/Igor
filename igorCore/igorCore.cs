@@ -8,15 +8,16 @@ using System.Runtime.CompilerServices;
 
 namespace igorCore
 {
-    public class Igor
+    public class igorCore
     {
         public string modelDetailsCfg { get; set; }
         public string modelDetailsWeights { get; set; }
         public string modelDetailsNames { get; set; }
         public Dictionary<int, string> theBags { get; set;  }
         public bool gpuAvailable { get; set; } = false;
-        
         private YoloWrapper yoloWrapper { get; set; } = null;
+        public int bagCount { get; set; }
+
 
 
         /// <summary>
@@ -139,6 +140,8 @@ namespace igorCore
                 }
                 objectNamesFile.Close();
 
+                this.bagCount = theBags.Count;
+
                 Console.WriteLine(" Your model codes for " + counter.ToString() + " distinct objects.");
             }
 
@@ -148,7 +151,7 @@ namespace igorCore
         /// <summary>
         /// Analyze an image, return list of all objects found
         /// </summary>
-        public List<string> Blucher(string file)
+        public List<string> Blücher(string file)
         {
             List<string> AbbyNormal = new List<string>();
 
