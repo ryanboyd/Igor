@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B7902A83-8762-47DF-A108-4D2564F43239}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>igorGui</RootNamespace>
-    <AssemblyName>igorGui</AssemblyName>
+    <RootNamespace>igorGUI</RootNamespace>
+    <AssemblyName>igorGUI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
