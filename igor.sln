@@ -3,20 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igorConsole", "igor\igorConsole.csproj", "{B7ABF09B-0688-4122-B9DA-080655F1868F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E6205388-3488-4DF7-A64F-DB2C5431663A} = {E6205388-3488-4DF7-A64F-DB2C5431663A}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alturos.Yolo", "Alturos.Yolo\src\Alturos.Yolo\Alturos.Yolo.csproj", "{23DC4BAA-5413-405B-937D-EC1E4C5F6A39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igorCore", "igorCore\igorCore.csproj", "{E6205388-3488-4DF7-A64F-DB2C5431663A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alturos.Yolo", "Alturos.Yolo\src\Alturos.Yolo\Alturos.Yolo.csproj", "{5345A282-712E-42B0-9195-298DDD8EF29D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igorConsole", "igorConsole\igorConsole.csproj", "{B7ABF09B-0688-4122-B9DA-080655F1868F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igorGUI", "igorGui\igorGUI.csproj", "{B7902A83-8762-47DF-A108-4D2564F43239}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5345A282-712E-42B0-9195-298DDD8EF29D} = {5345A282-712E-42B0-9195-298DDD8EF29D}
-		{E6205388-3488-4DF7-A64F-DB2C5431663A} = {E6205388-3488-4DF7-A64F-DB2C5431663A}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igorGUI", "igorGUI\igorGUI.csproj", "{B7902A83-8762-47DF-A108-4D2564F43239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,18 +17,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23DC4BAA-5413-405B-937D-EC1E4C5F6A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23DC4BAA-5413-405B-937D-EC1E4C5F6A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23DC4BAA-5413-405B-937D-EC1E4C5F6A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23DC4BAA-5413-405B-937D-EC1E4C5F6A39}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E6205388-3488-4DF7-A64F-DB2C5431663A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E6205388-3488-4DF7-A64F-DB2C5431663A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6205388-3488-4DF7-A64F-DB2C5431663A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6205388-3488-4DF7-A64F-DB2C5431663A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5345A282-712E-42B0-9195-298DDD8EF29D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5345A282-712E-42B0-9195-298DDD8EF29D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5345A282-712E-42B0-9195-298DDD8EF29D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5345A282-712E-42B0-9195-298DDD8EF29D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7ABF09B-0688-4122-B9DA-080655F1868F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7902A83-8762-47DF-A108-4D2564F43239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7902A83-8762-47DF-A108-4D2564F43239}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7902A83-8762-47DF-A108-4D2564F43239}.Release|Any CPU.ActiveCfg = Release|Any CPU
