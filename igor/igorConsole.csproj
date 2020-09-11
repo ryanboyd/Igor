@@ -72,7 +72,8 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)docsForBuild\LICENSE.txt" "$(TargetDir)"
 xcopy "$(SolutionDir)docsForBuild\README.txt" "$(TargetDir)"
-xcopy "$(SolutionDir)modelDat\*.*" "$(TargetDir)modelDat" /Y /I /E</PostBuildEvent>
+xcopy "$(SolutionDir)modelDat\*.*" "$(TargetDir)modelDat" /Y /I /E
+xcopy "$(SolutionDir)depends\*.*" "$(TargetDir)RequiredExtras" /Y /I /E</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
