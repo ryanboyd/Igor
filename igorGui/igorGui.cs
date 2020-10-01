@@ -98,9 +98,14 @@ namespace igorGui
                 MessageBox.Show("Please select a \"Names\" file before proceeding to process your images.", "I Ain't Got No Body", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            else if (!gotNames)
+            else if (!gotFileIn)
             {
-                MessageBox.Show("Please select a \"Names\" file before proceeding to process your images.", "I Ain't Got No Body", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select the folder that contains all of your images before proceeding.", "I Ain't Got No Body", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else if (!gotFileOut)
+            {
+                MessageBox.Show("Please select where you would like to put your output file before proceeding.", "I Ain't Got No Body", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -237,8 +242,15 @@ namespace igorGui
 
             if (startPath != null)
             {
-                openFile.InitialDirectory = Path.GetDirectoryName(startPath);
-                openFile.FileName = Path.GetFileName(startPath);
+                try
+                {
+                    openFile.InitialDirectory = Path.GetDirectoryName(startPath);
+                    openFile.FileName = Path.GetFileName(startPath);
+                }
+                catch
+                {
+
+                }
             }
 
 
