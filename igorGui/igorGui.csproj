@@ -100,5 +100,11 @@
     <Content Include="igor.ico" />
     <None Include="Resources\banner.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\igorCore\igorCore.csproj">
+      <Project>{e6205388-3488-4df7-a64f-db2c5431663a}</Project>
+      <Name>igorCore</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

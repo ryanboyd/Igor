@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igorConsole", "igorConsole\igorConsole.csproj", "{B7ABF09B-0688-4122-B9DA-080655F1868F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igorGUI", "igorGUI\igorGUI.csproj", "{B7902A83-8762-47DF-A108-4D2564F43239}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E6205388-3488-4DF7-A64F-DB2C5431663A} = {E6205388-3488-4DF7-A64F-DB2C5431663A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
