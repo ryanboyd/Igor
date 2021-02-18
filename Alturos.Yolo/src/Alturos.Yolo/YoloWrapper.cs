@@ -182,12 +182,13 @@ namespace Alturos.Yolo
             var count = 0;
             switch (this.DetectionSystem)
             {
-                case DetectionSystem.CPU:
-                    count = DetectImageCpu(filepath, ref container);
-                    break;
-                case DetectionSystem.GPU:
-                    count = DetectImageGpu(filepath, ref container);
-                    break;
+                
+                    case DetectionSystem.CPU:
+                        count = DetectImageCpu(filepath, ref container);
+                        break;
+                    case DetectionSystem.GPU:
+                        count = DetectImageGpu(filepath, ref container);
+                        break;
             }
 
             if (count == -1)
