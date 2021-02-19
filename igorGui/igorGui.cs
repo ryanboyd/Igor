@@ -339,7 +339,7 @@ namespace igorGui
                     }
                     catch (Exception ex)
                     {
-                            using (FileStream fs = new FileStream(bags.GetFileOut() + ".log", FileMode.Create, FileAccess.Write, FileShare.Read))
+                            using (FileStream fs = new FileStream(bags.GetFileOut() + ".log", FileMode.Append, FileAccess.Write, FileShare.Read))
                             using (StreamWriter logWriter = new StreamWriter(fs, System.Text.Encoding.UTF8))
                             {
                                 logWriter.WriteLine("================================================");
