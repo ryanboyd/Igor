@@ -180,6 +180,8 @@ namespace Alturos.Yolo
 
             var container = new BboxContainer();
             var count = 0;
+
+
             switch (this.DetectionSystem)
             {
                 
@@ -190,6 +192,8 @@ namespace Alturos.Yolo
                         count = DetectImageGpu(filepath, ref container);
                         break;
             }
+            
+
 
             if (count == -1)
             {

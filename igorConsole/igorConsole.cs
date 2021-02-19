@@ -227,7 +227,7 @@ namespace igorConsole
                         if (ableToLog)
                             {
                                 using (FileStream fs = new FileStream(logFile, FileMode.Create, FileAccess.Write, FileShare.Read))
-                                using (StreamWriter logWriter = new StreamWriter(fileStream, System.Text.Encoding.UTF8))
+                                using (StreamWriter logWriter = new StreamWriter(fs, System.Text.Encoding.UTF8))
                                 {
                                     logWriter.WriteLine(strongLine);
                                     logWriter.WriteLine("Error processing " + file);
