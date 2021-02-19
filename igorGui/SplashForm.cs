@@ -34,7 +34,7 @@ namespace igorGui
             TitleLabel.ForeColor = Color.Cyan;
             TitleLabel.TextAlign = ContentAlignment.MiddleCenter;
             TitleLabel.Text = "Igor v" + VersionText + Environment.NewLine +
-                              "(c) 2020, Ryan L. Boyd, Ph.D.";
+                              "(c) 2020-2021, Ryan L. Boyd, Ph.D.";
 
         }
 
