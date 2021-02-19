@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using Alturos.Yolo;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
+using System.Drawing;
 
 namespace igorCore
 {
@@ -153,6 +151,20 @@ namespace igorCore
         /// </summary>
         public List<string> Blücher(string file)
         {
+
+
+            //this tries to make sure that the image is valid before we pass it off to yolo, cuda, etc.
+            //if we don't do this, a malformed image can crash cuda.
+            try
+            {
+                Image newImage = Image.FromFile(file);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("This does not appear to be an image file, or it is broken/malformed in some way.");
+            }
+
+
             List<string> AbbyNormal = new List<string>();
 
             //actually process the image, extract the objects
