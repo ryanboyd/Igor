@@ -157,14 +157,10 @@ namespace igorCore
 
             //actually process the image, extract the objects
 
-            try { 
-                var items = this.yoloWrapper.Detect(file);
-                foreach (var item in items) AbbyNormal.Add(item.Type);
-                }
-            catch (Exception e)
-            {
-                throw new Exception("There was some unknown problem that occurred while trying to process your file. This ")
-            }
+            var items = this.yoloWrapper.Detect(file);
+            foreach (var item in items) AbbyNormal.Add(item.Type);
+                
+
 
             //    //items[0].Type -> "Person, Car, ..."
             //    //items[0].Confidence -> 0.0 (low) -> 1.0 (high)
