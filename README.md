@@ -4,7 +4,7 @@
  A console-based wrapper to Alturos.Yolo v3.0.6. Counts the number of each type of object found within each image.
 
 ## Download
- The compiled binary can be downloaded from https://www.ryanboyd.io/software/toolbox
+ The compiled binary can be downloaded from https://www.ryanboyd.io/software/toolbox/#Igor
 
 ## System requirements
 - [.NET Framework 4.6.1](https://www.microsoft.com/en-us/download/details.aspx?id=49982)
