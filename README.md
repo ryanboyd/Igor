@@ -4,7 +4,7 @@
  A console-based wrapper to Alturos.Yolo v3.0.6. Counts the number of each type of object found within each image.
 
 ## Download
- The compiled binary can be downloaded from https://www.ryanboyd.io/software/toolbox/#Igor
+ The compiled binary can be downloaded from https://github.com/ryanboyd/Igor/releases
 
 ## System requirements
 - [.NET Framework 4.6.1](https://www.microsoft.com/en-us/download/details.aspx?id=49982)
@@ -23,7 +23,7 @@
  
  ![banner](img/igorGUI.png)
  
- Finally, when you [download Igor](https://www.ryanboyd.io/software/toolbox), you may notice that there is a "modelDat" folder included in the archive. Within the modelDat folder, you will find several subfolders containing pre-trained models, plus a "modelSelect.txt" file. For the console-based version of Igor, you can change the details in your modelSelect.txt file to tell the software which pretrained model to use. In the GUI-based version of the software, you can use the interface/buttons to select your model files. Note that you will want to make sure that you're selecting all three files from the same model folder.
+ Finally, when you [download Igor](https://github.com/ryanboyd/Igor/releases), you may notice that there is a "modelDat" folder included in the archive. Within the modelDat folder, you will find several subfolders containing pre-trained models, plus a "modelSelect.txt" file. For the console-based version of Igor, you can change the details in your modelSelect.txt file to tell the software which pretrained model to use. In the GUI-based version of the software, you can use the interface/buttons to select your model files. Note that you will want to make sure that you're selecting all three files from the same model folder.
  
 
 ## GPU / CUDA
